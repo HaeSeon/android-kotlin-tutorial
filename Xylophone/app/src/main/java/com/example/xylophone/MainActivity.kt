@@ -33,10 +33,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sounds.forEach{tune(it)}
+        sounds.forEach{tune(it)}       //sounds 리스트를 forEach()함수를 사용하여 요소를 하나씩 꺼내서 tune()메서드에 전달한다.
     }
 
-    private fun tune(pitch:Pair<Int,Int>){
+    private fun tune(pitch:Pair<Int,Int>){      //tune()메서드는 Pair 객체를 받는다.
         val soundId = soundPool.load(this, pitch.second,1)   //load()메서드로 음원의 ID 얻음
         findViewById<TextView>(pitch.first).setOnClickListener{             //findViewById()메서드로 텍스트뷰 ID에 해당하는 뷰를 얻음
             soundPool.play(soundId, 1.0f, 1.0f, 0, 0, 1.0f)     //텍스트뷰 클릭시 음원재생
