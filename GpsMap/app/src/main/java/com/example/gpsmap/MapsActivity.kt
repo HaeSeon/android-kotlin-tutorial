@@ -26,7 +26,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_maps)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        // SupportMapFragment를 가져와서 지도가 준비되면 알림을 받습니다.
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -38,15 +38,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun locationInit(){
         fusedLocationProviderClient = FusedLocationProviderClient(this)
 
-        locationCallback = MyLocationCallBack
+        locationCallback = MyLocationCallBack()
 
         locationRequest= LocationRequest()
 
         //GPS 우선
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY   //priority : 정확도를 나타냄
         //업데이트 인터벌
-        locationRequest.interval = 10000
-        locationRequest.fastestInterval = 5000
+        locationRequest.interval = 10000    //위치를 갱신하는데 필요한 시간을 밀리초 단위로 입력
+        locationRequest.fastestInterval = 5000      //다른 앱에서 위치를 갱신했을 때 그 정보를 가장 빠른 간격(밀리초 단위)로 입력
+
+        //GPS 를 사용하여 가장 정확한 위치를 요구하면서 10초마다 위치정도 갱신, 그 사이 다른 앱에서 위치를 갱신햇다면 5초마다 확인하여 그 값을 활용(베터리 절약)
     }
 
 
@@ -59,6 +61,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
+    //위치요청은 액티비티가 활성화되는 onResume()매서드에서 수행
     override  fun onResume(){
         super.onResume()
         addLocationListner()
@@ -73,7 +76,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         override fun onLocationResult(locaationResult: LocationResult?) {
             super.onLocationResult(locaationResult)
 
-            var location = locationRequest?.lastLocation
+            var location = LocationResult?.lastLocation
+            location?. = LatLng(latitude, longitude)
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
         }
     }
 }
